@@ -1,0 +1,27 @@
+{
+  "scriptFile": "__init__.py",
+  "bindings": [
+    {
+      "authLevel": "anonymous",
+      "type": "httpTrigger",
+      "direction": "in",
+      "name": "request",
+      "route": "hub",
+      "methods": [
+        "post"
+      ]
+    },
+    {
+      "type": "http",
+      "direction": "out",
+      "name": "$return"
+    },
+    {
+      "type": "queue",
+      "direction": "out",
+      "name": "outputCommandQueue",
+      "queueName": "discord-slash-command-queue",
+      "connection": "AZURE_STORAGE_CONNECTION_STRING"
+    }
+  ]
+}
