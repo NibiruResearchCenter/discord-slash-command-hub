@@ -3,8 +3,9 @@ import json
 import logging
 import azure.functions as func
 
-from nacl.signing import  VerifyKey
+from nacl.signing import VerifyKey
 from nacl.exceptions import BadSignatureError
+
 
 def main(request: func.HttpRequest,  outputCommandQueue: func.Out[str]) -> func.HttpResponse:
     logging.info('Discord slash command hub received a request.')
@@ -18,7 +19,8 @@ def main(request: func.HttpRequest,  outputCommandQueue: func.Out[str]) -> func.
 
     # Verify signature
     try:
-        verify_key.verify(f'{timestamp}{body}'.encode(), bytes.fromhex(signature))
+        verify_key.verify(f'{timestamp}{body}'.encode(),
+                          bytes.fromhex(signature))
     except BadSignatureError:
         logging.error('Invalid request signature')
         return func.HttpResponse(status_code=401)
@@ -30,9 +32,9 @@ def main(request: func.HttpRequest,  outputCommandQueue: func.Out[str]) -> func.
         logging.info('PING received')
         logging.info('Return type:1 to response')
         return func.HttpResponse(
-            body='{"type":1}', 
-            status_code=200, 
-            headers={'Content-Type':'application/json'})
+            body='{"type":1}',
+            status_code=200,
+            headers={'Content-Type': 'application/json'})
 
     # Send to azure storage queue
     outputCommandQueue.set(body)
@@ -47,5 +49,5 @@ def main(request: func.HttpRequest,  outputCommandQueue: func.Out[str]) -> func.
     }
     return func.HttpResponse(
         body=json.dumps(response_body),
-        status_code=200, 
-        headers={'Content-Type':'application/json'})
+        status_code=200,
+        headers={'Content-Type': 'application/json'})
