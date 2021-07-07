@@ -1,6 +1,7 @@
 # Discord Slash Command Hub
 
-本项目为 Discord 服务器 Mirror's Edge
+本项目是为 Discord 服务器 Mirror Field 特制的
+需要配合本组织其他的 repo 使用
 
 ## command-hub
 
