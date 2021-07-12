@@ -27,8 +27,10 @@ def main(request: func.HttpRequest,  outputCommandQueue: func.Out[str]) -> func.
 
     logging.info('Signature confirmed')
 
+    jsonBody = json.loads(body);
+
     # Check ping message
-    if json.loads(body)['type'] == 1:
+    if jsonBody['type'] == 1:
         logging.info('PING received')
         logging.info('Return type:1 to response')
         return func.HttpResponse(
@@ -41,12 +43,19 @@ def main(request: func.HttpRequest,  outputCommandQueue: func.Out[str]) -> func.
     logging.info('Successfully send data to queue')
 
     # Return pending status
-    response_body = {
-        "type": 5,
-        "data": {
-            "flags": 64
+    
+    if jsonBody['data']['name'] == 'account':
+        response_body = {
+            "type": 5,
+            "data": {
+                "flags": 64
+            }
         }
-    }
+    else:
+        response_body = {
+            "type": 5
+        }
+
     return func.HttpResponse(
         body=json.dumps(response_body),
         status_code=200,
